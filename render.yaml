@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: swasthiq-api
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: swasthiq-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: "3.10"
+
+  - type: pserv
+    name: swasthiq-db
+    plan: free
+    ipAllowList: []
+    postgresMajorVersion: 15
